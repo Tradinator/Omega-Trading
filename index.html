@@ -3,97 +3,63 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Omega Trading</title>
-	<meta name="title" content="Omega Trading">
-	<meta name="description" content="A closed loop, with no escape— it is how the markets truly book.">
+  <title>Omega Trading</title>
+  <meta name="title" content="Omega Trading">
+  <meta name="description" content="A closed loop, with no escape— it is how the markets truly book.">
 
-	<!-- Favicon -->
-	<link rel="icon" type="image/png" sizes="32x32" href="transparant-icon.png">
-	<link rel="icon" type="image/png" sizes="192x192" href="transparant-icon.png">
-	<link rel="apple-touch-icon" href="transparant-icon.png">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="transparant-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="transparant-icon.png">
+  <link rel="apple-touch-icon" href="transparant-icon.png">
 
-<!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://omega-trading.nl/">
-<meta property="og:title" content="Omega Trading">
-<meta property="og:description" content="A closed loop, with no escape— it is how the markets truly book.">
-<meta property="og:image" content="https://omega-trading.nl/og-image.png">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://omega-trading.nl/">
+  <meta property="og:title" content="Omega Trading">
+  <meta property="og:description" content="A closed loop, with no escape— it is how the markets truly book.">
+  <meta property="og:image" content="https://omega-trading.nl/og-image.png">
 
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Omega Trading">
-<meta name="twitter:image" content="https://omega-trading.nl/og-image.png">
-
-
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Omega Trading">
+  <meta name="twitter:image" content="https://omega-trading.nl/og-image.png">
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: Helvetica, Arial, sans-serif;
-    }
-
+    html, body { height: 100%; margin: 0; font-family: Helvetica, Arial, sans-serif; }
     body {
-      background:
-        repeating-linear-gradient(
-          45deg,
-          #0d2c2c,
-          #0d2c2c 2px,
-          #123838 2px,
-          #123838 4px
-        );
-      color: #fff;
+      background: repeating-linear-gradient(45deg,#0d2c2c,#0d2c2c 2px,#123838 2px,#123838 4px);
+      color:#fff;
     }
 
-    /* Cursor-logo */
-    #t {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 48px;
-      font-weight: 700;
-      white-space: nowrap;
-      text-align: center;
+    /* Cursor-logo (let op: geen transform meer) */
+    #t{
+      position:fixed;
+      display:flex;
+      align-items:center;
+      gap:4px;
+      font-size:48px;
+      font-weight:700;
+      white-space:nowrap;
+      text-align:center;
+      pointer-events:none;
+      left:0; top:0; /* JS positioneert */
+    }
+    #t .word{
+      color:#fff;
+      text-shadow:-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+    }
+    #t .icon{
+      color:#4cd1a1; font-weight:900;
+      text-shadow:-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
     }
 
-    #t .word {
-      color: #ffffff;
-      text-shadow:
-        -2px -2px 0 #000,
-         2px -2px 0 #000,
-        -2px  2px 0 #000,
-         2px  2px 0 #000;
+    footer{
+      position:fixed; bottom:0; width:100%; text-align:center; font-size:16px; color:#fff;
+      text-shadow:1px 1px 2px rgba(0,0,0,.7); padding:12px 0;
+      border-top:1px solid rgba(255,255,255,.2); background:rgba(0,0,0,.1);
     }
-
-    #t .icon {
-      color: #4cd1a1;
-      font-weight: 900;
-      text-shadow:
-        -2px -2px 0 #000,
-         2px -2px 0 #000,
-        -2px  2px 0 #000,
-         2px  2px 0 #000;
-    }
-
-    /* Footer */
-    footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      text-align: center;
-      font-size: 16px;
-      color: #ffffff;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-      padding: 12px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(0,0,0,0.1);
-    }
-    footer a { color: #4cd1a1; text-decoration: none; font-weight: bold; }
-    footer a:hover { text-decoration: underline; }
+    footer a{ color:#4cd1a1; text-decoration:none; font-weight:bold; }
+    footer a:hover{ text-decoration:underline; }
   </style>
 </head>
 <body>
@@ -109,20 +75,29 @@
   <script>
     const t = document.getElementById('t');
 
-    // Start ALTIJD in het midden
-    function center() {
-      t.style.left = (window.innerWidth / 2) + 'px';
-      t.style.top  = (window.innerHeight / 2) + 'px';
+    function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+    function placeAt(x, y){
+      const r = t.getBoundingClientRect();
+      const pad = 20;
+      let left = x - r.width/2;
+      let top  = y - r.height/2;
+
+      left = clamp(left, pad, window.innerWidth  - r.width  - pad);
+      top  = clamp(top,  pad, window.innerHeight - r.height - pad);
+
+      t.style.left = left + 'px';
+      t.style.top  = top  + 'px';
     }
+
+    function center(){ placeAt(window.innerWidth/2, window.innerHeight/2); }
+
     window.addEventListener('load', center);
     window.addEventListener('resize', center);
 
-    // Desktop: volg de muis (mobiel blijft gecentreerd)
-    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      window.addEventListener('mousemove', e => {
-        t.style.left = e.clientX + 'px';
-        t.style.top  = e.clientY + 'px';
-      });
+    // Alleen desktop: muis volgen
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches){
+      window.addEventListener('mousemove', e => placeAt(e.clientX, e.clientY));
     }
   </script>
 </body>
