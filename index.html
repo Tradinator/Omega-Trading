@@ -3,13 +3,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Omega Trading</title>
+	<title>Omega Trading</title>
+	<meta name="title" content="Omega Trading">
+	<meta name="description" content="💡 Omega Ω is both the beginning and the end: A closed loop, with no escape— it is how the markets truly book.">
 
-  <!-- favicon: groen Ω -->
-  <link rel="icon" href="data:image/svg+xml,
-  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-    <text x='50%' y='70%' font-size='80' text-anchor='middle' fill='%234cd1a1'>Ω</text>
-  </svg>">
+	<!-- Favicon -->
+	<link rel="icon" type="image/png" sizes="32x32" href="transparant-icon.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="transparant-icon.png">
+	<link rel="apple-touch-icon" href="transparant-icon.png">
+
+	<!-- Open Graph / Facebook / WhatsApp -->
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://omega-trading.nl/">
+	<meta property="og:title" content="Omega Trading">
+	<meta property="og:description" content="💡 Omega Ω is both the beginning and the end: A closed loop, with no escape— it is how the markets truly book.">
+	<meta property="og:image" content="https://omega-trading.nl/transparant-icon.png">
+
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image">
+	<meta property="twitter:url" content="https://omega-trading.nl/">
+	<meta property="twitter:title" content="Omega Trading">
+	<meta property="twitter:description" content="💡 Omega Ω is both the beginning and the end: A closed loop, with no escape— it is how the markets truly book.">
+	<meta property="twitter:image" content="https://omega-trading.nl/transparant-icon.png">
+
 
   <style>
     html, body {
@@ -19,7 +35,7 @@
     }
 
     body {
-      background: 
+      background:
         repeating-linear-gradient(
           45deg,
           #0d2c2c,
@@ -30,20 +46,19 @@
       color: #fff;
     }
 
-    /* cursor logo */
+    /* Cursor-logo */
     #t {
       position: fixed;
-      top: 0; 
-      left: 0;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      pointer-events: none;
-
       display: flex;
       align-items: center;
       gap: 4px;
       font-size: 48px;
       font-weight: 700;
       white-space: nowrap;
+      text-align: center;
     }
 
     #t .word {
@@ -57,7 +72,6 @@
 
     #t .icon {
       color: #4cd1a1;
-      font-size: 48px;
       font-weight: 900;
       text-shadow:
         -2px -2px 0 #000,
@@ -66,6 +80,7 @@
          2px  2px 0 #000;
     }
 
+    /* Footer */
     footer {
       position: fixed;
       bottom: 0;
@@ -78,35 +93,8 @@
       border-top: 1px solid rgba(255, 255, 255, 0.2);
       background: rgba(0,0,0,0.1);
     }
-
-    footer a {
-      color: #4cd1a1;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Mobile/tablet fallback */
-    @media (hover: none) and (pointer: coarse) {
-      #t {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      footer {
-        font-size: 18px;
-        padding: 16px 0;
-      }
-
-      footer a {
-        font-size: 18px;
-      }
-    }
+    footer a { color: #4cd1a1; text-decoration: none; font-weight: bold; }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -120,11 +108,23 @@
   </footer>
 
   <script>
-    addEventListener('mousemove', e => {
-      const t = document.getElementById('t');
-      t.style.left = e.clientX + 'px';
-      t.style.top  = e.clientY + 'px';
-    });
+    const t = document.getElementById('t');
+
+    // Start ALTIJD in het midden
+    function center() {
+      t.style.left = (window.innerWidth / 2) + 'px';
+      t.style.top  = (window.innerHeight / 2) + 'px';
+    }
+    window.addEventListener('load', center);
+    window.addEventListener('resize', center);
+
+    // Desktop: volg de muis (mobiel blijft gecentreerd)
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      window.addEventListener('mousemove', e => {
+        t.style.left = e.clientX + 'px';
+        t.style.top  = e.clientY + 'px';
+      });
+    }
   </script>
 </body>
 </html>
