@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Omega Trading</title>
+
+  <!-- favicon: groen Ω -->
+  <link rel="icon" href="data:image/svg+xml,
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+    <text x='50%' y='70%' font-size='80' text-anchor='middle' fill='%234cd1a1'>Ω</text>
+  </svg>">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: 
+        repeating-linear-gradient(
+          45deg,
+          #0d2c2c,
+          #0d2c2c 2px,
+          #123838 2px,
+          #123838 4px
+        );
+      color: #fff;
+    }
+
+    /* cursor logo */
+    #t {
+      position: fixed;
+      top: 0; 
+      left: 0;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 48px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    #t .word {
+      color: #ffffff;
+      text-shadow:
+        -2px -2px 0 #000,
+         2px -2px 0 #000,
+        -2px  2px 0 #000,
+         2px  2px 0 #000;
+    }
+
+    #t .icon {
+      color: #4cd1a1;
+      font-size: 48px;
+      font-weight: 900;
+      text-shadow:
+        -2px -2px 0 #000,
+         2px -2px 0 #000,
+        -2px  2px 0 #000,
+         2px  2px 0 #000;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      color: #ffffff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+      padding: 12px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0,0,0,0.1);
+    }
+
+    footer a {
+      color: #4cd1a1;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Mobile/tablet fallback */
+    @media (hover: none) and (pointer: coarse) {
+      #t {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      footer {
+        font-size: 18px;
+        padding: 16px 0;
+      }
+
+      footer a {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="t">
+    <span class="word">Omega</span>
+    <span class="icon">Ω</span>
+  </div>
+
+  <footer>
+    <p>Contact: <a href="mailto:Rene@Omega-Trading.nl">Rene@Omega-Trading.nl</a></p>
+  </footer>
+
+  <script>
+    addEventListener('mousemove', e => {
+      const t = document.getElementById('t');
+      t.style.left = e.clientX + 'px';
+      t.style.top  = e.clientY + 'px';
+    });
+  </script>
+</body>
+</html>
