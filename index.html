@@ -31,7 +31,7 @@
       color:#fff;
     }
 
-    /* Cursor-logo (let op: geen transform meer) */
+    /* Cursor-logo (geen transform; JS positioneert) */
     #t{
       position:fixed;
       display:flex;
@@ -41,8 +41,8 @@
       font-weight:700;
       white-space:nowrap;
       text-align:center;
-      pointer-events:none;
-      left:0; top:0; /* JS positioneert */
+      left:0; top:0; /* JS zet positie */
+      /* pointer-events: none;  -> UIT, zodat touch drag werkt */
     }
     #t .word{
       color:#fff;
@@ -60,6 +60,11 @@
     }
     footer a{ color:#4cd1a1; text-decoration:none; font-weight:bold; }
     footer a:hover{ text-decoration:underline; }
+
+    /* Optioneel: iets kleinere size op small screens */
+    @media (max-width: 600px){
+      #t{ font-size: 40px; }
+    }
   </style>
 </head>
 <body>
@@ -92,12 +97,56 @@
 
     function center(){ placeAt(window.innerWidth/2, window.innerHeight/2); }
 
+    // Start altijd gecentreerd + recenter bij resize
     window.addEventListener('load', center);
     window.addEventListener('resize', center);
 
-    // Alleen desktop: muis volgen
+    // Desktop (muis): volg cursor
     if (matchMedia('(hover: hover) and (pointer: fine)').matches){
       window.addEventListener('mousemove', e => placeAt(e.clientX, e.clientY));
+    } else {
+      // Mobiel/Tablet: drag & drop
+      let dragging = false;
+      let touchId = null;
+
+      // Begin drag alleen als je op het logo tapt
+      t.addEventListener('touchstart', (e) => {
+        if (e.changedTouches.length > 0){
+          const t0 = e.changedTouches[0];
+          dragging = true;
+          touchId = t0.identifier;
+          e.preventDefault(); // voorkom scroll tijdens drag
+          placeAt(t0.clientX, t0.clientY);
+        }
+      }, { passive:false });
+
+      // Verplaats tijdens drag
+      window.addEventListener('touchmove', (e) => {
+        if (!dragging) return;
+        for (const touch of e.changedTouches){
+          if (touch.identifier === touchId){
+            e.preventDefault();
+            placeAt(touch.clientX, touch.clientY);
+            break;
+          }
+        }
+      }, { passive:false });
+
+      // Stop drag
+      window.addEventListener('touchend', (e) => {
+        for (const touch of e.changedTouches){
+          if (touch.identifier === touchId){
+            dragging = false;
+            touchId = null;
+            break;
+          }
+        }
+      });
+
+      window.addEventListener('touchcancel', () => {
+        dragging = false;
+        touchId = null;
+      });
     }
   </script>
 </body>
